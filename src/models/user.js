@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 //user schemaaaaa omgggggggg
 const userSchema = new mongoose.Schema({
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: [true, 'Please provide password'],
     minlength: [6, 'Password must be at lease 6 characters'],
-    select: false;
+    select: false
   },
   theme: {
     type: String, 
@@ -43,8 +43,9 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date, 
     default: Date.now
-  }, 
-    timestamps: true
+  }
+}, {
+  timestamps: true
 });
 
 //hashing password before adding to databasssse
@@ -54,12 +55,11 @@ userSchema.pre('save', async function(next) {
   }
 
   try {
-    const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, 10);
-      next(); 
-    } catch (error) {
-        next(error);
-    }
+    this.password = await bcrypt.hash(this.password, 10);
+    next(); 
+  } catch (error) {
+    next(error);
+  }
 });
 
 //using methods to compare entered password with hashed password
@@ -78,4 +78,4 @@ userSchema.methods.getPublicProfile = function() {
     };
 }
 
-export default mongoose.model ('User', userSchema)
+export default mongoose.model('User', userSchema);
