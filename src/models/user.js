@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema({
   theme: {
     type: String, 
     enum: {
-        values: ['nova', 'bloom', 'pixel'],
+        values: ['cosmic', 'garden', 'neon'],
         message: '{VALUE} is not a valid theme'
     },
-    default: 'nova'
+    default: 'cosmic'
   },
   balance: {
     type: Number, 
