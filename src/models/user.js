@@ -22,5 +22,35 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide password'],
     minlength: [6, 'Password must be at lease 6 characters'],
     select: false;
+  },
+  theme: {
+    type: String, 
+    enum: {
+        values: ['nova', 'bloom', 'pixel'],
+        message: '{VALUE} is not a valid theme'
+    },
+    default: 'nova'
+  },
+  balance: {
+    type: Number, 
+    default: 0, 
+    min: [0, 'Balance cannot be negative']
+  }, 
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date, 
+    default: Date.now
+  }, 
+    timestamps: true
+});
+
+//hashing password before adding to databasssse
+userSchema.pre('save', async function(next) {
+    if (!this.isModified('password') || !this.password) {
+    return;
   }
-})
+  this.password = await bcrypt.hash(this.password, 10);
+});
