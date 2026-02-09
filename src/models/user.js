@@ -50,7 +50,32 @@ const userSchema = new mongoose.Schema({
 //hashing password before adding to databasssse
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password') || !this.password) {
-    return;
+    return next();
   }
-  this.password = await bcrypt.hash(this.password, 10);
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, 10);
+      next(); 
+    } catch (error) {
+        next(error);
+    }
 });
+
+//using methods to compare entered password with hashed password
+userSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+//another cute method to get profile without sensitive data
+userSchema.methods.getPublicProfile = function() {
+    return {
+        _id: this._id,
+        name: this.name, 
+        email: this.email, 
+        theme: this.theme, 
+        balance: this.balance,
+        createdAt: this.createdAt
+    };
+}
+
+export default mongoose.model ('User', userSchema)
