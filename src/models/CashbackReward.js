@@ -18,6 +18,15 @@ const cashbackRewardSchema = new mongoose.Schema({
     transactionAmount: {
         type: Number,
         required: true,
-    }
+    },
+    percentage: {
+        type: Number,
+        default: 5, //5% cashback
+    }, 
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+});
 
-})
+export default mongoose.model('CashbackReward', cashbackRewardSchema);
