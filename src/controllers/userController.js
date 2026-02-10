@@ -152,3 +152,38 @@ export const updateUserBalance = async (req, res) => {
         });
     }
 };
+
+//delete user account
+// ROUTE - DELETE /api/users/:id
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.param.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            });
+        }
+        //STOP! ANOTHER SECURITY CHECK, 
+         if (user._id.toString() !== req.user.id) {
+            return res.status(403).json({
+                success:false,
+                error: 'Not authorized to update this profile'
+            });
+        }
+
+        await user.deleteOne();
+
+        res.json({
+            success: true, 
+            message: 'User account deleted successfully'
+        });
+    } catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error deleting user account'
+        });
+    }
+};
