@@ -132,4 +132,9 @@ export const getMe = async (req, res) => {
 
 //logout user
 //ROUTE - POST /api/auth/logout
-export const 
+export const logout = async (req, res) => {
+    res.json({
+        success:true,
+        message: 'Logged out successfully'
+    });
+};
