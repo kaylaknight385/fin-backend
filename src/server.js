@@ -8,6 +8,9 @@ dotenv.config();
 
 const app = express();
 
+//connect my database MWAH
+connectDB()
+
 //middleware
 app.use(express.json());
 

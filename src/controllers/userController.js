@@ -87,6 +87,68 @@ export const updateUserProfile = async (req, res) => {
 
 export const updateUserBalance = async (req, res) => {
     try {
-        const 
+        const { amount, type } = req.body;
+
+        if (!amount || !type) {
+            return res.status(400).json ({
+                success: false,
+                error: 'Please provide amount type (add/subtract)'
+            });
+        }
+
+        if (amount <= 0) {
+            return res.status(400).json ({
+                success: false,
+                error: 'Amount must be greater than 0'
+            });
+        }
+
+        const user = await User.findById(req.param.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            });
+        }
+
+        if (user._id.toString() !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                error: 'Not authorized'
+            });
+        }
+        //update balance 
+        if (type === 'add') {
+            user.balance += amount;
+        } else if (type === 'subtract') {
+            if (user.balance < amount ) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Insufficient balance'
+                });
+            }
+            user.balance -= amount;
+        } else {
+            return res.status(400).json({
+                success; false,
+                error: 'Invalid type. Use "add" or "subtract"'
+            });
+        }
+
+        await user.save();
+
+        res.json({
+            success: true,
+            data: {
+                balance: user.balance 
+            }
+        });
+    } catch (error) {
+        console.error('Update balance error', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error updating balance'
+        });
     }
-}
+};
