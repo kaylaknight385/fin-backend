@@ -83,4 +83,10 @@ export const updateUserProfile = async (req, res) => {
 };
 
 //update user balance
-//
+// ROUTE - PATCH /api/users/:id/balance
+
+export const updateUserBalance = async (req, res) => {
+    try {
+        const 
+    }
+}
