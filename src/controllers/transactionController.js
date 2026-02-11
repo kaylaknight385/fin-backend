@@ -340,3 +340,54 @@ export const deleteTransaction = async (req, res) => {
         });
     }
 };
+
+// get transaction stats for dashboard
+//ROUTE - GET /api/transactions/stats
+export  const getTransactionStats = async (req, res) => {
+  try {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const startOfMonth = new Date(currentMonth + '-01');
+
+    // get all transactions for current month
+    const transactions = await Transaction.find({
+      user: req.user.id,
+      date: { $gte: startOfMonth }
+    });
+
+    // calculate stats
+    const income = transactions
+      .filter(t => t.type === 'income')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const expenses = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+      // group expenses by category
+    const expensesByCategory = transactions
+      .filter(t => t.type === 'expense')
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+      }, {});
+
+      res.json({
+      success: true,
+      data: {
+        month: currentMonth,
+        totalIncome: income,
+        totalExpenses: expenses,
+        netSavings: income - expenses,
+        expensesByCategory,
+        transactionCount: transactions.length
+      }
+    });
+
+    } catch (error) {
+    console.error('Get stats error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Error fetching transaction statistics' 
+    });
+  }
+};
