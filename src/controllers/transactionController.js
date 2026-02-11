@@ -279,4 +279,64 @@ export const updateTransaction = async (req, res) => {
 
 };
 
-//
+//delete transaction
+//ROUTE - DELETE /api/transactions/:id
+export const deleteTransaction = async (req, res) => {
+    try {
+        const transaction = await Transaction.findByID(req.params.id);
+
+        if (!transaction) {
+            return res.status(404).json ({
+                success: false,
+                error: 'Transaction not found'
+            });
+        }
+
+        //MORE SECURITY YEAH. U OWN THIS TRANSACTION???
+        if (transaction.user.toString() !== req.user.id) {
+            return res.status(403).json ({
+                success: false,
+                error: 'Not authorized to delete this transaction'
+            });
+        }
+        //deleted transactions will update user balance
+        const user = await User.findByID(req.user.id);
+        if (transaction.type === 'income') {
+            user.balance -= transsaction.amount;
+        } else {
+            user.balance += transaction.amount;
+        }
+        await user.save();
+
+
+        //update budget if nessacary
+        if (transaction.type === 'expense') {
+            const currentMonth = new Date(transaction.date).toISOString.slice(0, 7);
+
+            const budget = await Budget.findOne({
+                user: req.user.id,
+                catergory: transaction.category,
+                month: currentMonth
+            });
+
+            if (budget) {
+                budget.spent -= transaction.amount;
+                await budget.save();
+            }
+        }
+
+        await transaction.deleteOne();
+
+        res.json({
+            success: true,
+            message: 'Transaction successfully deleted'
+        });
+        
+    } catch (error) {
+        console.error('Delete transaction error:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error deleting transaction'
+        });
+    }
+};
