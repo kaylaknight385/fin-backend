@@ -114,7 +114,7 @@ export const createTransaction = async (req, res) => {
         await budget.save();
       }
     }
-    // Check for cashback eligibility
+    // check for cashback eligibility
     if (type === 'expense') {
         const descriptionLower = description.toLowerCase();
         let platform = null;
@@ -188,7 +188,95 @@ export const createTransaction = async (req, res) => {
         console.error('Creating transaction error', error);
 
         if (error.name === 'ValidationError') {
-            const message = 
+            const messages = Object.values(error.errors).map(e => e.message);
+            return res.status(400).json ({
+                success: false,
+                error: messages[0]
+            });
+        
         }
+
+        res.status(500).json ({
+            success: false,
+            error: 'Error creating transaction'
+        });
     }
-}
+};
+
+//updatinnnng transaction
+//ROUTE - PUT /api/transaction/:id
+
+export const updateTransaction = async (req, res) => {
+    try {
+        let transaction = await Transaction.findById(req.params.id);
+        
+        if (!transaction) {
+            return res.status(404).json({
+                success: false,
+                error: 'Transaction not found'
+            });
+        }
+
+        //SECURITY- does user own transaction? lets make sure
+        if (transaction.user.toString() !== req.user.id) {
+            return res.status(403).json ({
+                success: false,
+                error: 'Not authorized to update this transaction '
+            });
+        }
+        const { description, amount, type, category, date } = req.body;
+
+        //if transaction amount or type changes, we adjust user balance here. period.
+        const user = await User.findById(req.user.id);
+
+        if (transaction.type === 'income') {
+            user.balance -= transaction.amount;
+        } else {
+            user.balance += transaction.amount;
+        }
+
+        //update transaction here
+        transaction.description = description || transaction.description;
+        transaction.amount = amount || transaction.amount;
+        transaction.type = type || transaction.type;
+        transaction.category = category || transaction.category;
+        transaction.date = date || transaction.date;
+
+        await transaction.save();
+
+        //apply updated effects to balance
+        if (transaction.type === 'income') {
+            user.balance += transaction.amount;
+        } else {
+            user.balance -= transaction.amount;
+        }
+
+        await user.save();
+
+        res.json({
+            success: true,
+            data: {
+                transaction
+            }
+        });
+
+    } catch (error) {
+        console.error('Update transaction error:', error);
+
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(e => e.meassage);
+            return res.status(400).json({
+                success: false,
+                error: messages[0]
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            error: 'Error updating transaction'
+        });
+    }
+
+};
+
+//
