@@ -78,6 +78,30 @@ export const getTotalCashback = async (req, res) => {
                     count: 0
                 };
             }
-        })
+            acc[reward.platform].totalEarned += reward.amount;
+            acc[reward.platform].count += 1;
+            return acc;
+
+        }, ());
+
+        //make an array and sort total
+        const platformStats = Object.values(byPlatform)
+        .sort((a, b) => b.totalEarned - a.totalEearned);
+
+        res.json({
+            success: true,
+            data: {
+                totalEearned: totalEarned.toFixed(2),
+                totalTransactions,
+                period: period || 'all',
+                byPlatform: platformStats
+            }
+         });
+    } catch (error) {
+        console.error('Get total cashback error:', error);
+        res.status(500).json({
+            success: false, 
+            error: 'Error fetching total cashback'   
+        });
     }
-}
+};
