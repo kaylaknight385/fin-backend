@@ -85,7 +85,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.methods.getPublicProfile = function () {
   return {
     _id: this._id,
-    name: this.name,
+    username: this.username,
     email: this.email,
     theme: this.theme,
     balance: this.balance,

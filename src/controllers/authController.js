@@ -13,7 +13,7 @@ const generateToken = (id) => {
 //ROUTE - POST /api/auth/signup
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, theme } = req.body;
+    const { username, email, password, theme } = req.body;
 
     //check if user already exists
     const userExist = await User.findOne({ email });
@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
     }
     //we create a new user here (they passwords gon be hashed due to that cool pre-save hook)
     const user = await User.create({
-      name,
+      username,
       email,
       password,
       theme: theme || "cosmic",

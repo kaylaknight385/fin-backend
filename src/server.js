@@ -3,14 +3,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import {connectDB } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
-import { authenticateToken } from './middleware/auth.js';
 
 dotenv.config();
 
 const app = express();
-
-//connect my database MWAH
-connectDB()
 
 //middleware
 app.use(express.json());
@@ -43,8 +39,8 @@ app.get('/api/test', (req, res) => {
 app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
-connectDB().then (() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
+//start server and connect to database
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    connectDB();
 });
