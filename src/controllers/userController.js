@@ -131,7 +131,7 @@ export const updateUserBalance = async (req, res) => {
             user.balance -= amount;
         } else {
             return res.status(400).json({
-                success; false,
+                success: false,
                 error: 'Invalid type. Use "add" or "subtract"'
             });
         }

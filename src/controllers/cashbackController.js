@@ -3,14 +3,14 @@ import CashbackReward from "../models/CashbackReward.js";
 //get all the caskabck rewards for the logged in user
 //ROTUE - GET /api/cashback
 
-export const getCashbackRewards = async (req. res) => {
+export const getCashbackRewards = async (req, res) => {
     try {
         const {platform, startDate, endDate} = req.query;
 
         //we filer here
         const filter = {user: req.user.id};
 
-        if (platforom) {
+        if (platform) {
             filter.platform = platform;
         }
 
@@ -65,7 +65,7 @@ export const getTotalCashback = async (req, res) => {
 
         const rewards = await CashbackReward.find(filter);
 
-        const totalEearned = rewards.reduce((sum, reward) => sum + reward.amount, 0)
+        const totalEarned = rewards.reduce((sum, reward) => sum + reward.amount, 0);
         const totalTransactions = rewards.length;
 
         //group by their platform
@@ -82,16 +82,16 @@ export const getTotalCashback = async (req, res) => {
             acc[reward.platform].count += 1;
             return acc;
 
-        }, ());
+        }, {});
 
         //make an array and sort total
         const platformStats = Object.values(byPlatform)
-        .sort((a, b) => b.totalEarned - a.totalEearned);
+        .sort((a, b) => b.totalEarned - a.totalEarned);
 
         res.json({
             success: true,
             data: {
-                totalEearned: totalEarned.toFixed(2),
+                totalEarned: totalEarned.toFixed(2),
                 totalTransactions,
                 period: period || 'all',
                 byPlatform: platformStats
@@ -125,8 +125,8 @@ export const getCashbackByPlatform = async (req, res) => {
             });
         }
 
-        const totalEarned = rewards.reduce((sum, reward) => sum + rewards.amount, 0);
-        const avaeragePerTransaction = totalEarned / rewards.length;
+        const totalEarned = rewards.reduce((sum, reward) => sum + reward.amount, 0);
+        const averagePerTransaction = totalEarned / rewards.length;
 
         res.json({
             success: true,

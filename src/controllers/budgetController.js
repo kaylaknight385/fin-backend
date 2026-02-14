@@ -1,5 +1,5 @@
 import Budget from '../models/Budget.js';
-import Transaction from '../models/Transaction.js';
+import Transaction from '../models/Transactions.js';
 
 // get all budgets for logged in user
 // ROUTE -   GET /api/budgets
