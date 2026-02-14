@@ -12,6 +12,8 @@ const generateToken = (id) => {
 //registering new user
 //ROUTE - POST /api/auth/signup
 export const signup = async (req, res) => {
+  console.log('=== SIGNUP REQUEST RECEIVED ===');
+  console.log('Request body:', req.body);
   try {
     const { username, email, password, theme } = req.body;
 
@@ -45,6 +47,8 @@ export const signup = async (req, res) => {
     });
   } catch (error) {
     console.error("Signup error:", error);
+    console.error("Error details:", error.message);
+    console.error("Error stack:", error.stack);
 
     // handle the validation errors
     if (error.name === "ValidationError") {
