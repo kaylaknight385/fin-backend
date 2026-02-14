@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema(
     balance: {
       type: Number,
       default: 0,
-      min: [0, "Balance cannot be negative"],
     },
     savingsGoal: {
       type: Number,
