@@ -1,5 +1,5 @@
 import Transactions from "../models/Transactions.js";
-import User from "../models/User.js"
+import User from "../models/user.js"
 import Budget from "../models/Budget.js"
 import CashbackReward from "../models/CashbackReward.js";
 

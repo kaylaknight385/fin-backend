@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/stats', authenticateToken, getTransactionStats);
 router.get('/', authenticateToken, getTransactions);
-router.get('/:id, authenticateToken, getTransaction');
+router.get('/:id', authenticateToken, getTransaction);
 router.post('/', authenticateToken, createTransaction);
 router.put('/:id', authenticateToken, updateTransaction);
 router.delete('/:id', authenticateToken, deleteTransaction);
