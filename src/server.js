@@ -9,8 +9,11 @@ dotenv.config();
 const app = express();
 
 //middleware
+app.use(cors({
+    origin: 'http://localhost:5173', //frontend URL
+    credentials: true
+}));
 app.use(express.json());
-app.use(cors());
 
 //my routes
 import authRoutes from './routes/auth.js';
