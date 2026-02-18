@@ -25,6 +25,7 @@ import userRoutes from './routes/users.js';
 import transactionRoutes from './routes/transactions.js';
 import budgetRoutes from './routes/budgets.js';
 import cashbackRoutes from './routes/cashback.js';
+import aiRoutes from './routes/ai.js';
 
 //mounting my routes
 app.use('/api/auth', authRoutes);
@@ -39,9 +40,6 @@ app.use('/api/ai', aiRoute);
 app.get('/api/test', (req, res) => {
     res.json({message: 'SERVER RUNNING AYYYYYYYE!'});
 });
-
-
-
 
 //error handler
 app.use(errorHandler);
