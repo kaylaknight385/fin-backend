@@ -4,6 +4,9 @@ import cors from 'cors';
 import {connectDB } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import aiRoute from './routes/ai.js';
+import { setServers } from "node:dns/promises";
+
+setServers(["1.1.1.1", "8.8.8.8"]);
 
 dotenv.config();
 
@@ -29,7 +32,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/cashback', cashbackRoutes);
-app.use('/api/ai', aiRoutes);
+app.use('/api/ai', aiRoute);
 
 
 //test routes no auth needed

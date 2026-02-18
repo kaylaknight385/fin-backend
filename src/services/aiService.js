@@ -2,6 +2,8 @@ import axios from 'axios';
 import { getThemePrompt } from './themePrompts.js';
 
 const OLLAMA_URL = 'http://localhost:11434/api/chat';
+const VALID_API_KEYS = ['demo-key-123', 'presentation-key-456'];
+
 
 // safety filter 
 function isUnsafeTopic(text) {
