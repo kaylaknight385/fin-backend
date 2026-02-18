@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.post('/recalculate', authenticateToken, recalculateBudgets);
 router.get('/', authenticateToken, getBudgets);
-router.post('/:id', authenticateToken, createBudget);
-router.get('/', authenticateToken, getBudget);
+router.post('/', authenticateToken, createBudget);
+router.get('/:id', authenticateToken, getBudget);
 router.put('/:id', authenticateToken, updateBudget);
 router.delete('/:id', authenticateToken, deleteBudget);
 
