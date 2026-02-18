@@ -29,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/cashback', cashbackRoutes);
+app.use('/api/ai', aiRoutes);
 
 
 //test routes no auth needed
