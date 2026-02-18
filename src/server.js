@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import {connectDB } from './config/database.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import aiRoute from './routes/ai.js';
 
 dotenv.config();
 
