@@ -1,6 +1,6 @@
 import { getAIResponse } from '../services/aiService.js';
 import User from '../models/user.js';
-import Transaction from '../models/Transaction.js';
+import Transaction from '../models/Transactions.js';
 import Budget from '../models/Budget.js';
 import Conversation from '../models/Conversation.js';
 
