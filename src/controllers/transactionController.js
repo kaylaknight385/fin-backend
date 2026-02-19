@@ -311,11 +311,11 @@ export const deleteTransaction = async (req, res) => {
 
         //update budget if nessacary
         if (transaction.type === 'expense') {
-            const currentMonth = new Date(transaction.date).toISOString.slice(0, 7);
+            const currentMonth = new Date(transaction.date).toISOString().slice(0, 7);
 
             const budget = await Budget.findOne({
                 user: req.user.id,
-                catergory: transaction.category,
+                category: transaction.category,
                 month: currentMonth
             });
 
