@@ -20,7 +20,6 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.1"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kaylaknight385/fin-backend.git"

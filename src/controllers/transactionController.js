@@ -283,7 +283,7 @@ export const updateTransaction = async (req, res) => {
 //ROUTE - DELETE /api/transactions/:id
 export const deleteTransaction = async (req, res) => {
     try {
-        const transaction = await Transaction.findByID(req.params.id);
+        const transaction = await Transaction.findById(req.params.id);
 
         if (!transaction) {
             return res.status(404).json ({
@@ -300,9 +300,9 @@ export const deleteTransaction = async (req, res) => {
             });
         }
         //deleted transactions will update user balance
-        const user = await User.findByID(req.user.id);
+        const user = await User.findById(req.user.id);
         if (transaction.type === 'income') {
-            user.balance -= transsaction.amount;
+            user.balance -= transaction.amount;
         } else {
             user.balance += transaction.amount;
         }
