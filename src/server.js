@@ -14,7 +14,7 @@ const app = express();
 
 //middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5175'], //frontend URLs
+    origin: ['http://localhost:5173', 'http://localhost:5175', 'https://rizeeup.onrender.com'],
     credentials: true
 }));
 app.use(express.json());
